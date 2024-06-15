@@ -1,20 +1,98 @@
-import type { Metadata } from "next";
+"use client"
+
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { useState } from "react";
+import Menu from "./components/Menu";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Title",
-  description: "Created by Ludovit Kopcsanyi",
-};
+const inter = Inter(
+	{
+	subsets: ["latin"]
+	}
+);
 
 const RootLayout = ({ children }: Readonly<{children: React.ReactNode;}>) => {
-  return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-  );
+
+	const [ openMenu, setOpenMenu ] = useState<boolean>(false)
+
+	const handleMenuOpen = () => {
+		setOpenMenu(!openMenu)
+	}
+
+	return (
+		<html lang="en">
+			<head>
+				<title>
+					Title
+				</title>
+			</head>
+			<body className='min-h-screen'>
+			<header className='text-center'>
+				<div className="navbar flex-wrap bg-base-100">
+
+					<div className="flex-1">
+						<div
+							tabIndex={0}
+							role="button"
+							className="btn btn-ghost lg:hidden"
+							onClick={ handleMenuOpen }
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								id="menu-button"
+								className="h-6 w-6 cursor-pointer lg:hidden block"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								{
+									openMenu ?
+										<>
+											<path strokeWidth='2' d="M6,6 L18,18" />
+											<path strokeWidth='2' d="M6,18 L18,6" />
+										</> :
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth="2"
+											d="M4 6h16M4 12h16M4 18h16"
+										/>
+								}
+							</svg>
+						</div>
+						<a className="btn btn-ghost text-xl">daisyUI</a>
+					</div>
+
+						<Menu openMenu={ openMenu } />
+						<div className="dropdown dropdown-end order-1 lg:order-2">
+							<div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+								<div className="w-10 rounded-full">
+									<img alt="Tailwind CSS Navbar component" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+								</div>
+							</div>
+							<ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+								<li>
+									<a className="justify-between">
+										Profile
+									</a>
+								</li>
+								<li>
+									<a>Settings</a>
+								</li>
+								<li>
+									<a>Logout</a>
+								</li>
+							</ul>
+						</div>
+
+				</div>
+			</header>
+			<input type="checkbox" value="dark" className="toggle theme-controller"/>
+
+			{children}
+			</body>
+		</html>
+	);
 }
 
 export default RootLayout
