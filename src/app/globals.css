@@ -4,16 +4,23 @@
 
 @layer base {
 
+	:root {
+		--primary: #2f2547;
+		--secondary: #fd7b38;
+	}
+
 	:root[data-theme="light"] {
 		--foreground-rgb: 200, 200, 200;
 		--background-start-rgb: 220, 220, 220;
 		--background-end-rgb: 200, 200, 200;
+		--base: hsl(210, 8%, 25%);
 	}
 
 	:root[data-theme="dark"] {
 		--foreground-rgb: 0, 0, 0;
 		--background-start-rgb: 30, 30, 30;
 		--background-end-rgb: 45, 45, 45;
+		--base: #fff;
 	}
 
 }
