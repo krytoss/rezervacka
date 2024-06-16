@@ -5,6 +5,8 @@ import Menu from "./Menu"
 import MenuSwitcher from "./MenuSwitcher"
 import ProfileDropdown from "./ProfileDropdown"
 
+import './Navbar.css'
+
 const Navbar = () => {
 
 	const [ openMenu, setOpenMenu ] = useState<boolean>(false)
@@ -12,7 +14,7 @@ const Navbar = () => {
 	return (
 		<header className='text-center sticky top-0'>
 
-			<div className="navbar flex-wrap bg-base-300 dark:bg-base-400">
+			<div className="navbar flex-wrap text-white">
 
 				<div className="flex-1">
 

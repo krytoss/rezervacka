@@ -10,7 +10,7 @@ const MenuItem = ({ link, text, children }: Props) => {
 
 	return (
 		<li className='w-full lg:w-auto'>
-			<a className='font-semibold text-md text-gray-600 dark:text-white' href={ link }>
+			<a className='font-semibold text-md' href={ link }>
 				{ text || children }
 			</a>
 		</li>
