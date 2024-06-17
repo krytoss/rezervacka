@@ -14,7 +14,7 @@ const Navbar = () => {
 	return (
 		<header className='text-center fixed p-2 w-full'>
 
-			<div className="navbar flex-wrap text-white rounded-full">
+			<div className="navbar bg-gradient flex-wrap text-white rounded-xl">
 
 				<div className="flex-1">
 
