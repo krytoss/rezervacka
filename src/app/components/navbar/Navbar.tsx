@@ -12,9 +12,9 @@ const Navbar = () => {
 	const [ openMenu, setOpenMenu ] = useState<boolean>(false)
 
 	return (
-		<header className='text-center sticky top-0'>
+		<header className='text-center fixed p-2 w-full'>
 
-			<div className="navbar flex-wrap text-white">
+			<div className="navbar flex-wrap text-white rounded-xl">
 
 				<div className="flex-1">
 
