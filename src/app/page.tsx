@@ -1,6 +1,9 @@
+import HomeSection from "./components/sections/HomeSection";
+
 const Home = () => {
   	return (
 		<>
+			<HomeSection />
 		</>
   	);
 }
