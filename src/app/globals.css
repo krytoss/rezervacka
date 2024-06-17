@@ -27,6 +27,22 @@
 
 }
 
+.bg-gradient {
+	background: linear-gradient(
+		to bottom,
+		color-mix(in srgb, var(--bgprimary) 90%, transparent),
+		color-mix(in srgb, var(--bgsecondary) 90%, transparent)
+	);
+}
+
+.btn.bg-gradient:hover {
+	background: linear-gradient(
+		to bottom,
+		color-mix(in srgb, var(--bgprimary) 50%, transparent),
+		color-mix(in srgb, var(--bgsecondary) 50%, transparent)
+	);
+}
+
 body {
 	color: rgb(var(--foreground-rgb));
 	background: linear-gradient(
