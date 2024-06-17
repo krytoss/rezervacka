@@ -20,7 +20,9 @@ const Navbar = () => {
 
 					<MenuSwitcher openMenu={ openMenu } setOpenMenu={ setOpenMenu } />
 
-					<a className="btn btn-ghost text-xl">daisyUI</a>
+					<a className="btn btn-ghost text-xl">
+						<img src='./img/logo.png' className='w-12' /> rezervacka.online
+					</a>
 
 				</div>
 
