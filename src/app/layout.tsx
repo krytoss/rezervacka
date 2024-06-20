@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/navbar/Navbar";
 
 const inter = Inter(
 	{
@@ -15,13 +14,11 @@ const RootLayout = ({ children }: Readonly<{children: React.ReactNode;}>) => {
 
 			<head>
 				<title>
-					Title
+					Rezervačka
 				</title>
 			</head>
 
 			<body className='min-h-screen text-gray-700 dark:text-white'>
-
-				<Navbar />
 
 				{children}
 
