@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import icons from "rocketicons/tailwind";
 
 const config: Config = {
   content: [
@@ -10,7 +11,8 @@ const config: Config = {
     extend: {},
   },
   plugins: [
-    require('daisyui')
+    require('daisyui'),
+	icons
   ],
   darkMode: ['selector', '[data-theme="dark"]'],
   daisyui: {
