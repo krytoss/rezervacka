@@ -4,7 +4,7 @@ type Props = {
 	id?: string,
 	label?: string,
 	required?: boolean,
-	type: string,
+	type?: string,
 	className?: string,
 	inline?: boolean,
 	icon?: ReactNode,
