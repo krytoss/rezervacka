@@ -27,6 +27,10 @@
 
 }
 
+.bg-secondary {
+	background: color-mix(in srgb, var(--bgsecondary) 90%, transparent);
+}
+
 .bg-gradient {
 	background: linear-gradient(
 		to bottom,

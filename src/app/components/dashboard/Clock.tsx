@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { BiTime } from "rocketicons/bi"
+import { BsClock } from "rocketicons/bs"
 
 const Clock = () => {
 
@@ -23,8 +23,8 @@ const Clock = () => {
 	}, [])
 
 	return (
-			<span className='pl-3 pr-3 py-2 bg-white bg-opacity-20 rounded-md ml-4'>
-				<BiTime className='icon-white-sm' /> { time.toLocaleTimeString('sk-SK', { hour: '2-digit', minute:'2-digit' }) }
+			<span className='pl-3 pr-3 py-2 ml-4 text-xl'>
+				<BsClock className='icon-white -mt-1' /> { time.toLocaleTimeString('sk-SK', { hour: '2-digit', minute:'2-digit' }) }
 			</span>
 	)
 }
