@@ -8,22 +8,15 @@ import { AiOutlineLoading3Quarters } from "rocketicons/ai"
 
 const Calendar = () => {
 
+	const [ weekDates, setWeekDates ] = useState<Date[]>([])
 	const [ hours, setHours ] = useState<number[]>([])
 	const [ offset, setOffset ] = useState<number>(0)
 	const [ selectedDate, setSelectedDate ] = useState<Date>()
 	const [ loading, setLoading ] = useState<boolean>(true)
-	const [ currentDay, setCurrentDay ] = useState<Date>(new Date())
-	const [ calendarDays, setCalendarDays ] = useState<Date[][]>([])
 
-	const today = new Date()
-
-	const weekDays = [ 'Po', 'Ut', 'St', 'Št', 'Pi', 'So', 'Ne' ]
-	const months = [ 'Január', 'Február', 'Marec', 'Apríl', 'Máj', 'Jún', 'Júl', 'August', 'September', 'Október', 'November', 'December' ]
-
-	const allowedDays = [1, 2, 3, 4, 5, 6]
+	const allowedDays = [0, 1, 2, 3, 4, 5]
 	const holidayDays = ['2024/5/31']
 	const bookedDays = [ '5. 6. 2024 10:00:00' ]
-
 	const allowedHours = {
 		min: 8, // čas začiatku prvého termínu
 		max: 17 // čas začiatku posledného termínu
@@ -31,44 +24,24 @@ const Calendar = () => {
 	const interval = 60
 
 	useEffect(() => {
-	
+		let currWeekDays = []
+		for (var i = 0; i < 7; i++) {
+			const day = new Date
+			const curr = day.getDate() - day.getDay() + 1 + i + offset*7
+			day.setDate(curr)
+			day.setHours(0, 0, 0, 0)
+			currWeekDays.push(day)
+		}
+		setWeekDates(currWeekDays)
+
 		let currHours = []
 		for (var i = allowedHours.min*60; i <= allowedHours.max*60; i += interval) {
 			currHours.push(i)
 		}
 		setHours(currHours)
-	
+
 		setLoading(false)
-	}, [ setHours, setLoading ])
-
-	useEffect(() => {
-		setCurrentDay(new Date(today.setMonth(today.getMonth() + offset)))
-	}, [ offset, setCurrentDay ])
-
-	useEffect(() => {
-		const dayIterator = new Date(currentDay.getFullYear(), currentDay.getMonth(), 1)
-		const weekdayOfFirstDay = dayIterator.getDay() == 0 ? 6 : dayIterator.getDay() - 1
-		let days = []
-		let week = []
-
-		for (let day = 0; day < 42; day++) {
-			if (day === 0 && weekdayOfFirstDay === 0) {
-				dayIterator.setDate(dayIterator.getDate() - 7)
-			} else if (day === 0) {
-				dayIterator.setDate(dayIterator.getDate() + (day - weekdayOfFirstDay))
-			} else {
-				dayIterator.setDate(dayIterator.getDate() + 1)
-			}
-
-			week.push(new Date(dayIterator))
-			if (week.length === 7) {
-				days.push(week)
-				week = []
-			}
-		}
-
-		setCalendarDays(days)
-	}, [ currentDay, setCalendarDays ])
+	}, [ setHours, offset, setLoading ])
 
 	const increaseOffset = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
@@ -94,21 +67,23 @@ const Calendar = () => {
 											className={ offset === 0 ? 'opacity-40 cursor-not-allowed hover:border-transparent focus:border-transparent focus:outline-none' : '' }
 											onClick={ decreaseOffset }
 										>
-											<SlArrowLeft className='icon-gray-500 icon-lg' />
+											<SlArrowLeft className='icon-white icon-lg' />
 										</button>
 										<span className='inline-block w-80 px-10'>
-											{ `${months[currentDay.getMonth()]} ${currentDay.getFullYear()}` }
+											{ `${weekDates[0]?.toLocaleDateString('sk')} -  ${weekDates[6]?.toLocaleDateString('sk' )}` }
 										</span>
 										<button onClick={ increaseOffset }>
-											<SlArrowRight className='icon-gray-500 icon-lg' />
+											<SlArrowRight className='icon-white icon-lg' />
 										</button>
 									</td>
 								</tr>
 								<tr>
 									{
-										weekDays.map((day, i) => (
+										weekDates.map((day, i) => (
+											allowedDays.includes(day.getUTCDay()) && // only showing allowed Dates
+											!holidayDays.includes(`${day.getFullYear()}/${(day.getMonth() + 1)}/${day.getDate()}`) &&
 											<th key={i} className='p-5'>
-												{ day }
+												{ `${day.toLocaleString('sk', { weekday: 'short' })}, ${day.getDate()}. ${day.getMonth() + 1}. ${day.getFullYear()}` }
 											</th>
 										))
 									}
@@ -116,21 +91,29 @@ const Calendar = () => {
 							</thead>
 							<tbody className='pt-20'>
 								{
-									calendarDays.map((el, i) => {
-										return (
-											<tr key={ i }>
+									hours.map((hour, i) =>
+										(
+											<tr key={i}>
 												{
-													el.map((el, j) => {
-														const disabled = (el.getMonth() !== currentDay.getMonth())
-																			|| (allowedDays.indexOf(el.getDay()) == -1)
-																			|| (el.getTime() < today.getTime());
-														console.log('deň ' + el.toDateString() + ': ' + el.getDay())
-														return <DayButton disabled={disabled} key={j} day={el} setDate={setSelectedDate} selected={false} booked={false} />
+													weekDates.map((day, i) => {
+														if (!allowedDays.includes(day.getUTCDay())) {
+															return
+														} else if (holidayDays.includes(`${day.getFullYear()}/${(day.getMonth() + 1)}/${day.getDate()}`)) {
+															return
+														}
+														const start = new Date(day)
+														start.setHours( parseInt( '' + hour/60 ), hour%60 )
+														const endHour = hour + interval
+														const end = new Date(day)
+														end.setHours( parseInt( '' + endHour/60 ), endHour%60 )
+														const booked = bookedDays.includes(start.toLocaleString('sk'))
+		//												console.log(bookedDays[0] + ", " + start.toLocaleString('sk'))
+														return <DayButton key={i} selected={ start.getTime() == selectedDate?.getTime() } booked={ booked } start={start} end={end} setDate={ setSelectedDate } />
 													})
 												}
 											</tr>
 										)
-									})
+									)
 								}	
 							</tbody>
 						</table>
