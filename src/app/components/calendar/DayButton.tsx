@@ -5,14 +5,15 @@ type Props = {
 	disabled: boolean,
 	setDate: (date: Date | undefined) => void,
 	selected: boolean,
-	booked: boolean
+	booked: boolean,
+	className: string
 }
 
-const DayButton = ({day, disabled, setDate, selected, booked}: Props) => {
+const DayButton = ({day, disabled, setDate, selected, booked, className}: Props) => {
 
 	const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
-		if (booked)
+		if (booked || disabled)
 			return
 		if (selected) {
 			setDate(undefined)
@@ -25,10 +26,11 @@ const DayButton = ({day, disabled, setDate, selected, booked}: Props) => {
 		<td className='p-1'>
 			<button
 				className={`
-					block p-0 sm:p-1 md:p-2 w-full rounded-md
-					${disabled ? 'text-gray-400 opacity-50 cursor-not-allowed' : 'hover:bg-gray-400'}
-					${selected ? 'bg-gray-300 hover:bg-gray-300 text-gray-900' : ''}
+					block p-0 sm:p-1 md:p-2 w-full rounded-md font-semibold
+					${disabled ? 'text-gray-400 opacity-50 cursor-not-allowed' : (!selected && 'hover:bg-gray-300')}
+					${selected ? 'bg-gray-400 hover:bg-gray-400 text-gray-900' : ''}
 					${booked ? 'cursor-not-allowed opacity-50 hover:border-transparent focus:outline-none' : ''}
+					${className}
 				`}
 				onClick={ handleClick }
 			>

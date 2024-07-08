@@ -16,6 +16,7 @@ const Calendar = () => {
 	const [ calendarDays, setCalendarDays ] = useState<Date[][]>([])
 
 	const today = new Date()
+	today.setHours(0,0,0,0);
 
 	const weekDays = [ 'Po', 'Ut', 'St', 'Št', 'Pi', 'So', 'Ne' ]
 	const months = [ 'Január', 'Február', 'Marec', 'Apríl', 'Máj', 'Jún', 'Júl', 'August', 'September', 'Október', 'November', 'December' ]
@@ -80,6 +81,20 @@ const Calendar = () => {
 		setOffset(old => old < 1 ? old : old - 1)
 	}, [ setOffset ])
 
+	const selectDate = useCallback((day?: Date) => {
+		if (day && day.getMonth() !== currentDay.getMonth()) {
+			if (currentDay.getMonth() === 11 && day.getMonth() === 0) {
+				setOffset(old => old + 1)
+			} else if (currentDay.getMonth() === 0 && day.getMonth() === 11) {
+				setOffset(old => old - 1)
+			} else {
+				setOffset(old => old + (day.getMonth() > currentDay.getMonth() ? 1 : -1))
+			}
+			console.log(day.getMonth())
+		}
+		setSelectedDate(old => old === day ? undefined : day)
+	}, [ currentDay, setOffset, setSelectedDate ])
+
 	return (
 		<>
 			{
@@ -121,11 +136,21 @@ const Calendar = () => {
 											<tr key={ i }>
 												{
 													el.map((el, j) => {
-														const disabled = (el.getMonth() !== currentDay.getMonth())
-																			|| (allowedDays.indexOf(el.getDay()) == -1)
+														const disabled = (allowedDays.indexOf(el.getDay()) == -1)
 																			|| (el.getTime() < today.getTime());
-														console.log('deň ' + el.toDateString() + ': ' + el.getDay())
-														return <DayButton disabled={disabled} key={j} day={el} setDate={setSelectedDate} selected={false} booked={false} />
+														const selected = selectedDate?.toDateString() === el.toDateString()
+														return <DayButton
+																disabled={disabled}
+																key={j}
+																day={el}
+																setDate={selectDate}
+																selected={selected}
+																booked={false}
+																className={
+																	(today.toISOString() === el.toISOString() ? 'text-red-500' : '') + ' ' +
+																	(el.getMonth() !== currentDay.getMonth() ? 'text-gray-400' : '')
+																}
+															/>
 													})
 												}
 											</tr>
