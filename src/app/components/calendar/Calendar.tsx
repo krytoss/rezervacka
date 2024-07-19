@@ -5,6 +5,7 @@ import DayButton from "./DayButton"
 import { SlArrowLeft, SlArrowRight } from "rocketicons/sl"
 import Form from "../form/Form"
 import { AiOutlineLoading3Quarters } from "rocketicons/ai"
+import Times from "./Times"
 
 const Calendar = () => {
 
@@ -101,64 +102,67 @@ const Calendar = () => {
 				loading ?
 					<AiOutlineLoading3Quarters className='icon-7xl icon-black animate-spin' />
 					: <Form>
-						<table className='text-center m-auto'>
-							<thead className='border-b-2 border-white'>
-								<tr>
-									<td className='' colSpan={7}>
-										<button
-											className={ offset === 0 ? 'opacity-40 cursor-not-allowed hover:border-transparent focus:border-transparent focus:outline-none' : '' }
-											onClick={ decreaseOffset }
-										>
-											<SlArrowLeft className='icon-gray-500 icon-lg' />
-										</button>
-										<span className='inline-block w-80 px-10'>
-											{ `${months[currentDay.getMonth()]} ${currentDay.getFullYear()}` }
-										</span>
-										<button onClick={ increaseOffset }>
-											<SlArrowRight className='icon-gray-500 icon-lg' />
-										</button>
-									</td>
-								</tr>
-								<tr>
+						<div className='flex'>
+							<table className='text-center m-auto'>
+								<thead className='border-b-2 border-white'>
+									<tr>
+										<td className='' colSpan={7}>
+											<button
+												className={ offset === 0 ? 'opacity-40 cursor-not-allowed hover:border-transparent focus:border-transparent focus:outline-none' : '' }
+												onClick={ decreaseOffset }
+											>
+												<SlArrowLeft className='icon-gray-500 icon-lg' />
+											</button>
+											<span className='inline-block w-80 px-10'>
+												{ `${months[currentDay.getMonth()]} ${currentDay.getFullYear()}` }
+											</span>
+											<button onClick={ increaseOffset }>
+												<SlArrowRight className='icon-gray-500 icon-lg' />
+											</button>
+										</td>
+									</tr>
+									<tr>
+										{
+											weekDays.map((day, i) => (
+												<th key={i} className='p-5'>
+													{ day }
+												</th>
+											))
+										}
+									</tr>
+								</thead>
+								<tbody className='pt-20'>
 									{
-										weekDays.map((day, i) => (
-											<th key={i} className='p-5'>
-												{ day }
-											</th>
-										))
+										calendarDays.map((el, i) => {
+											return (
+												<tr key={ i }>
+													{
+														el.map((el, j) => {
+															const disabled = (allowedDays.indexOf(el.getDay()) == -1)
+																				|| (el.getTime() < today.getTime());
+															const selected = selectedDate?.toDateString() === el.toDateString()
+															return <DayButton
+																	disabled={disabled}
+																	key={j}
+																	day={el}
+																	setDate={selectDate}
+																	selected={selected}
+																	booked={false}
+																	className={
+																		(today.toISOString() === el.toISOString() ? 'text-red-500' : '') + ' ' +
+																		(el.getMonth() !== currentDay.getMonth() ? 'text-gray-400' : '')
+																	}
+																/>
+														})
+													}
+												</tr>
+											)
+										})
 									}
-								</tr>
-							</thead>
-							<tbody className='pt-20'>
-								{
-									calendarDays.map((el, i) => {
-										return (
-											<tr key={ i }>
-												{
-													el.map((el, j) => {
-														const disabled = (allowedDays.indexOf(el.getDay()) == -1)
-																			|| (el.getTime() < today.getTime());
-														const selected = selectedDate?.toDateString() === el.toDateString()
-														return <DayButton
-																disabled={disabled}
-																key={j}
-																day={el}
-																setDate={selectDate}
-																selected={selected}
-																booked={false}
-																className={
-																	(today.toISOString() === el.toISOString() ? 'text-red-500' : '') + ' ' +
-																	(el.getMonth() !== currentDay.getMonth() ? 'text-gray-400' : '')
-																}
-															/>
-													})
-												}
-											</tr>
-										)
-									})
-								}	
-							</tbody>
-						</table>
+								</tbody>
+							</table>
+							{ selectedDate && <Times selectedDate={selectedDate} allowedHours={ allowedHours } interval={ interval } /> }
+						</div>
 					</Form>
 			}
 		</>
