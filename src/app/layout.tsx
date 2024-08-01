@@ -18,7 +18,7 @@ const RootLayout = ({ children }: Readonly<{children: React.ReactNode;}>) => {
 				</title>
 			</head>
 
-			<body className='min-h-screen text-gray-700 dark:text-white'>
+			<body className='min-h-screen text-gray-700 text-white'>
 
 				{children}
 

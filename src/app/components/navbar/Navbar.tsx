@@ -12,7 +12,7 @@ const Navbar = () => {
 	const [ openMenu, setOpenMenu ] = useState<boolean>(false)
 
 	return (
-		<header className='text-center fixed p-2 w-full'>
+		<header className='text-center fixed p-2 w-full z-50'>
 
 			<div className="navbar bg-gradient flex-wrap text-white rounded-xl">
 

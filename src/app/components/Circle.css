@@ -1,0 +1,22 @@
+.circle {
+	animation: float 20s infinite linear;
+}
+
+.circle.small {
+	animation: float 10s infinite linear;
+}
+
+.circle.big {
+	animation: float 35s infinite linear;
+}
+
+@keyframes float {
+	0% {
+		top: 100%;
+		left: 0%;
+	}
+	100% {
+		top: -50%;
+		left: 50%;
+	}
+}
