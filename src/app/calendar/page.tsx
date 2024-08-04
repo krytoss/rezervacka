@@ -1,9 +1,10 @@
-import Calendar from "../components/calendar/Calendar"
+import BookingWrapper from "../components/calendar/BookingWrapper"
 
 const CalendarPage = () => {
+
 	return (
-		<div className="w-screen h-screen flex justify-center items-center">
-			<Calendar />
+		<div className="w-screen h-screen flex">
+			<BookingWrapper />
 		</div>
 	)
 }

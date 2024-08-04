@@ -91,81 +91,72 @@ const Calendar = () => {
 			} else {
 				setOffset(old => old + (day.getMonth() > currentDay.getMonth() ? 1 : -1))
 			}
-			console.log(day.getMonth())
 		}
 		setSelectedDate(old => old === day ? undefined : day)
 	}, [ currentDay, setOffset, setSelectedDate ])
 
 	return (
-		<>
+		<div className='w-4/5 mx-auto'>
 			{
 				loading ?
 					<AiOutlineLoading3Quarters className='icon-7xl icon-black animate-spin' />
-					: <Form>
-						<div className='flex'>
-							<table className='text-center m-auto'>
-								<thead className='border-b-2 border-white'>
-									<tr>
-										<td className='' colSpan={7}>
-											<button
-												className={ offset === 0 ? 'opacity-40 cursor-not-allowed hover:border-transparent focus:border-transparent focus:outline-none' : '' }
-												onClick={ decreaseOffset }
-											>
-												<SlArrowLeft className='icon-gray-500 icon-lg' />
-											</button>
-											<span className='inline-block w-80 px-10'>
-												{ `${months[currentDay.getMonth()]} ${currentDay.getFullYear()}` }
-											</span>
-											<button onClick={ increaseOffset }>
-												<SlArrowRight className='icon-gray-500 icon-lg' />
-											</button>
-										</td>
-									</tr>
-									<tr>
-										{
-											weekDays.map((day, i) => (
-												<th key={i} className='p-5'>
-													{ day }
-												</th>
-											))
-										}
-									</tr>
-								</thead>
-								<tbody className='pt-20'>
-									{
-										calendarDays.map((el, i) => {
+					: <div className='flex flex-col items-center'>
+						<table className='text-center m-auto'>
+							<thead className='border-b-2 border-white'>
+								<tr>
+									<th colSpan={7} className='p-5'>
+										<button
+											className={`btn ${offset === 0 ? 'opacity-40 cursor-not-allowed' : ''}`}
+											onClick={decreaseOffset}
+											disabled={offset === 0}
+										>
+											<SlArrowLeft className='icon-gray-500 icon-lg' />
+										</button>
+										<span className='inline-block w-80 text-center'>
+											{`${months[currentDay.getMonth()]} ${currentDay.getFullYear()}`}
+										</span>
+										<button className='btn' onClick={increaseOffset}>
+											<SlArrowRight className='icon-gray-500 icon-lg' />
+										</button>
+									</th>
+								</tr>
+								<tr>
+									{weekDays.map((day, i) => (
+										<th key={i} className='p-5'>
+											{day}
+										</th>
+									))}
+								</tr>
+							</thead>
+							<tbody className='pt-20'>
+								{calendarDays.map((week, i) => (
+									<tr key={i}>
+										{week.map((day, j) => {
+											const disabled = (allowedDays.indexOf(day.getDay()) === -1) || (day.getTime() < today.getTime());
+											const selected = selectedDate?.toDateString() === day.toDateString();
 											return (
-												<tr key={ i }>
-													{
-														el.map((el, j) => {
-															const disabled = (allowedDays.indexOf(el.getDay()) == -1)
-																				|| (el.getTime() < today.getTime());
-															const selected = selectedDate?.toDateString() === el.toDateString()
-															return <DayButton
-																	disabled={disabled}
-																	key={j}
-																	day={el}
-																	setDate={selectDate}
-																	selected={selected}
-																	booked={false}
-																	className={
-																		(today.toISOString() === el.toISOString() ? 'text-red-500' : '') + ' ' +
-																		(el.getMonth() !== currentDay.getMonth() ? 'text-gray-400' : '')
-																	}
-																/>
-														})
+												<DayButton
+													disabled={disabled}
+													key={j}
+													day={day}
+													setDate={selectDate}
+													selected={selected}
+													booked={false}
+													className={
+														(today.toISOString() === day.toISOString() ? 'text-red-500' : '') + ' ' +
+														(day.getMonth() !== currentDay.getMonth() ? 'text-gray-400' : '')
 													}
-												</tr>
-											)
-										})
-									}
-								</tbody>
-							</table>
-							{ selectedDate && <Times selectedDate={selectedDate} allowedHours={ allowedHours } interval={ interval } /> }
-						</div>
-					</Form>
+												/>
+											);
+										})}
+									</tr>
+								))}
+							</tbody>
+						</table>
+						{selectedDate && <Times selectedDate={selectedDate} allowedHours={allowedHours} interval={interval} />}
+					</div>
 			}
-		</>
+		</div>
 	)
 }
 
