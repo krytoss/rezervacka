@@ -11,10 +11,11 @@ const Calendar = () => {
 
 	const [ hours, setHours ] = useState<number[]>([])
 	const [ offset, setOffset ] = useState<number>(0)
-	const [ selectedDate, setSelectedDate ] = useState<Date>()
 	const [ loading, setLoading ] = useState<boolean>(true)
 	const [ currentDay, setCurrentDay ] = useState<Date>(new Date())
 	const [ calendarDays, setCalendarDays ] = useState<Date[][]>([])
+	const [ selectedDate, setSelectedDate ] = useState<Date>()
+	const [ dateTime, setDateTime ] = useState<Date>()
 
 	const today = new Date()
 	today.setHours(0,0,0,0);
@@ -72,6 +73,10 @@ const Calendar = () => {
 		setCalendarDays(days)
 	}, [ currentDay, setCalendarDays ])
 
+	useEffect(() => {
+		setDateTime(undefined)
+	}, [ selectedDate])
+
 	const increaseOffset = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
 		setOffset(old => old + 1)
@@ -96,65 +101,69 @@ const Calendar = () => {
 	}, [ currentDay, setOffset, setSelectedDate ])
 
 	return (
-		<div className='w-4/5 mx-auto'>
+		<div className='w-4/5 mx-auto bg-gray-600'>
 			{
 				loading ?
 					<AiOutlineLoading3Quarters className='icon-7xl icon-black animate-spin' />
-					: <div className='flex flex-col items-center'>
-						<table className='text-center m-auto'>
-							<thead className='border-b-2 border-white'>
-								<tr>
-									<th colSpan={7} className='p-5'>
-										<button
-											className={`btn ${offset === 0 ? 'opacity-40 cursor-not-allowed' : ''}`}
-											onClick={decreaseOffset}
-											disabled={offset === 0}
-										>
-											<SlArrowLeft className='icon-gray-500 icon-lg' />
-										</button>
-										<span className='inline-block w-80 text-center'>
-											{`${months[currentDay.getMonth()]} ${currentDay.getFullYear()}`}
-										</span>
-										<button className='btn' onClick={increaseOffset}>
-											<SlArrowRight className='icon-gray-500 icon-lg' />
-										</button>
-									</th>
-								</tr>
-								<tr>
-									{weekDays.map((day, i) => (
-										<th key={i} className='p-5'>
-											{day}
+					:
+					<Form>
+						{ dateTime?.toString() }
+						<div className='flex flex-col items-center'>
+							<table className='text-center m-auto'>
+								<thead className='border-b-2 border-white'>
+									<tr>
+										<th colSpan={7} className='p-5'>
+											<button
+												className={`btn ${offset === 0 ? 'opacity-40 cursor-not-allowed' : ''}`}
+												onClick={decreaseOffset}
+												disabled={offset === 0}
+											>
+												<SlArrowLeft className='icon-gray-500 icon-lg' />
+											</button>
+											<span className='inline-block w-80 text-center'>
+												{`${months[currentDay.getMonth()]} ${currentDay.getFullYear()}`}
+											</span>
+											<button className='btn' onClick={increaseOffset}>
+												<SlArrowRight className='icon-gray-500 icon-lg' />
+											</button>
 										</th>
-									))}
-								</tr>
-							</thead>
-							<tbody className='pt-20'>
-								{calendarDays.map((week, i) => (
-									<tr key={i}>
-										{week.map((day, j) => {
-											const disabled = (allowedDays.indexOf(day.getDay()) === -1) || (day.getTime() < today.getTime());
-											const selected = selectedDate?.toDateString() === day.toDateString();
-											return (
-												<DayButton
-													disabled={disabled}
-													key={j}
-													day={day}
-													setDate={selectDate}
-													selected={selected}
-													booked={false}
-													className={
-														(today.toISOString() === day.toISOString() ? 'text-red-500' : '') + ' ' +
-														(day.getMonth() !== currentDay.getMonth() ? 'text-gray-400' : '')
-													}
-												/>
-											);
-										})}
 									</tr>
-								))}
-							</tbody>
-						</table>
-						{selectedDate && <Times selectedDate={selectedDate} allowedHours={allowedHours} interval={interval} />}
-					</div>
+									<tr>
+										{weekDays.map((day, i) => (
+											<th key={i} className='p-5'>
+												{day}
+											</th>
+										))}
+									</tr>
+								</thead>
+								<tbody className='pt-20'>
+									{calendarDays.map((week, i) => (
+										<tr key={i}>
+											{week.map((day, j) => {
+												const disabled = (allowedDays.indexOf(day.getDay()) === -1) || (day.getTime() < today.getTime());
+												const selected = selectedDate?.toDateString() === day.toDateString();
+												return (
+													<DayButton
+														disabled={disabled}
+														key={j}
+														day={day}
+														setDate={selectDate}
+														selected={selected}
+														booked={false}
+														className={
+															(today.toISOString() === day.toISOString() ? 'text-red-500' : '') + ' ' +
+															(day.getMonth() !== currentDay.getMonth() ? 'text-gray-400' : '')
+														}
+													/>
+												);
+											})}
+										</tr>
+									))}
+								</tbody>
+							</table>
+							{selectedDate && <Times dateTime={dateTime} setDateTime={setDateTime} selectedDate={selectedDate} allowedHours={allowedHours} interval={interval} />}
+						</div>
+					</Form>
 			}
 		</div>
 	)

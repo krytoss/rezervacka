@@ -24,7 +24,7 @@ const BookingWrapper = () => {
 		} else {
 			setScope(undefined)
 		}
-	})
+	}, [ scopeId, setScope])
 
 	return (
 		<>
