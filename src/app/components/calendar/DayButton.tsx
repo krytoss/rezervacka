@@ -13,6 +13,7 @@ const DayButton = ({day, disabled, setDate, selected, booked, className}: Props)
 
 	const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
+		console.log(day.getDay())
 		if (booked || disabled)
 			return
 		if (selected) {

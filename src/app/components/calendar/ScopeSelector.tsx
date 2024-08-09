@@ -1,5 +1,5 @@
 type Props = {
-	scopes: { [key: number]: { name: string } },
+	scopes: { id: number, name: string }[],
 	scope: undefined | { name: string },
 	setScopeId: React.Dispatch<React.SetStateAction<undefined | number>>
 }
@@ -24,9 +24,9 @@ const ScopeSelector = ({ scopes, scope, setScopeId }: Props) => {
 					Zmeniť výber
 				</button>
 				:
-				scopes && Object.keys(scopes).map((key, i) => (
-					<button key={i} data-id={key} className="btn" onClick={ handleClickScope }>
-						{scopes[Number(key)].name}
+				scopes && scopes.map((el, i) => (
+					<button key={i} data-id={el.id} className="btn" onClick={ handleClickScope }>
+						{el.name}
 					</button>
 				))
 			}
