@@ -13,8 +13,8 @@ type Scope = {
 
 const BookingWrapper = () => {
 
-	const [ scopeId, setScopeId ] = useState<undefined | number>()
-	const [ scope, setScope ] = useState<undefined | { name: string }>()
+	const [ scopeId, setScopeId ] = useState<number>()
+	const [ scope, setScope ] = useState<Scope>()
 	const [ scopes, setScopes ] = useState<Scope[]>([])
 	const businessId = 2
 
@@ -42,7 +42,7 @@ const BookingWrapper = () => {
 	return (
 		<>
 			<ScopeSelector scopes={ scopes } scope={ scope } setScopeId={ setScopeId } />
-			{ scope && <Calendar scope={ scope } /> }
+			{ scope && <Calendar businessId={ businessId } scope={ scope } /> }
 		</>
 	)
 

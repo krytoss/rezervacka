@@ -1,19 +1,20 @@
-import { useCallback } from "react"
+import { Dispatch, SetStateAction, useCallback } from "react"
 
 type Props = {
 	day: Date,
 	disabled: boolean,
+	setAllowedHours: Dispatch<SetStateAction<{ min: string; max: string; } | undefined>>,
 	setDate: (date: Date | undefined) => void,
 	selected: boolean,
 	booked: boolean,
 	className: string
 }
 
-const DayButton = ({day, disabled, setDate, selected, booked, className}: Props) => {
+const DayButton = ({day, disabled, setAllowedHours, setDate, selected, booked, className}: Props) => {
 
 	const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
-		console.log(day.getDay())
+		setAllowedHours(undefined)
 		if (booked || disabled)
 			return
 		if (selected) {
@@ -21,7 +22,7 @@ const DayButton = ({day, disabled, setDate, selected, booked, className}: Props)
 		} else {
 			setDate(day)
 		}
-	}, [ day ])
+	}, [ day, setDate, setAllowedHours, selected, booked, disabled ])
 
 	return (
 		<td className='p-1'>

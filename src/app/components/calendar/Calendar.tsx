@@ -15,18 +15,20 @@ type Scope = {
 }
 
 type Props = {
+	businessId: number,
 	scope: Scope
 }
 
-const Calendar = ( { scope } : Props ) => {
+const Calendar = ( { businessId, scope } : Props ) => {
 
-	const [ hours, setHours ] = useState<number[]>([])
+	const [ hours, setHours ] = useState<Date[]>([])
 	const [ offset, setOffset ] = useState<number>(0)
-	const [ loading, setLoading ] = useState<boolean>(true)
+	const [ loading, setLoading ] = useState<boolean>(false)
 	const [ currentDay, setCurrentDay ] = useState<Date>(new Date())
 	const [ calendarDays, setCalendarDays ] = useState<Date[][]>([])
 	const [ selectedDate, setSelectedDate ] = useState<Date>()
 	const [ dateTime, setDateTime ] = useState<Date>()
+	const [ allowedHours, setAllowedHours ] = useState<{ min: string, max: string }>()
 
 	const today = new Date()
 	today.setHours(0,0,0,0);
@@ -38,22 +40,51 @@ const Calendar = ( { scope } : Props ) => {
 	const holidayDays = ['2024/5/31']
 	const bookedDays = [ '5. 6. 2024 10:00:00' ]
 
-	const allowedHours = {
-		min: 8, // čas začiatku prvého termínu
-		max: 17 // čas začiatku posledného termínu
-	} // treba nejak pridať obed?
 	const interval = scope?.duration
+
+	useEffect(() => {
+		setHours([])
+		if (selectedDate) {
+			fetch(`http://localhost:3000/api/operating_hours?business_id=${businessId}&day=${selectedDate?.getDay()}`)
+				.then(response => response.json())
+				.then(data => {
+					setAllowedHours({
+						min: data[0].open_time,
+						max: data[0].close_time
+					})
+				})
+				.catch(error => {
+					// Handle the error here
+					console.log(error)
+				});
+		}
+	}, [ setHours, selectedDate, setAllowedHours, businessId ])
 
 	useEffect(() => {
 	
 		let currHours = []
-		for (var i = allowedHours.min*60; i <= allowedHours.max*60; i += interval) {
-			currHours.push(i)
+		if (allowedHours != undefined) {
+			if (allowedHours.min && allowedHours.max) {
+
+				const opening = new Date(selectedDate?.getTime() || 0)
+				opening.setHours(parseInt(allowedHours.min.split(':')[0]))
+				opening.setMinutes(parseInt(allowedHours.min.split(':')[1]))
+				const closing = new Date(selectedDate?.getTime() || 0)
+				closing.setHours(parseInt(allowedHours.max.split(':')[0]))
+				closing.setMinutes(parseInt(allowedHours.max.split(':')[1]))
+				const current = new Date(selectedDate?.getTime() || 0)
+				current.setHours(opening.getHours())
+				current.setMinutes(opening.getMinutes())
+
+				while (current.getTime() < closing.getTime()) {
+					currHours.push(new Date(current))
+					current.setMinutes(current.getMinutes() + interval)
+				}
+			}
 		}
 		setHours(currHours)
 	
-		setLoading(false)
-	}, [ setHours, setLoading ])
+	}, [ setHours, selectedDate, allowedHours ])
 
 	useEffect(() => {
 		setCurrentDay(new Date(today.setMonth(today.getMonth() + offset)))
@@ -158,6 +189,7 @@ const Calendar = ( { scope } : Props ) => {
 														disabled={disabled}
 														key={j}
 														day={day}
+														setAllowedHours={setAllowedHours}
 														setDate={selectDate}
 														selected={selected}
 														booked={false}
@@ -172,7 +204,7 @@ const Calendar = ( { scope } : Props ) => {
 									))}
 								</tbody>
 							</table>
-							{selectedDate && <Times dateTime={dateTime} setDateTime={setDateTime} selectedDate={selectedDate} allowedHours={allowedHours} interval={interval} />}
+							{selectedDate && <Times hours={hours} dateTime={dateTime} setDateTime={setDateTime} />}
 						</div>
 					</Form>
 			}
