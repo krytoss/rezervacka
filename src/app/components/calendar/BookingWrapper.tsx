@@ -42,7 +42,7 @@ const BookingWrapper = () => {
 	return (
 		<>
 			<ScopeSelector scopes={ scopes } scope={ scope } setScopeId={ setScopeId } />
-			{ scope && <Calendar /> }
+			{ scope && <Calendar scope={ scope } /> }
 		</>
 	)
 

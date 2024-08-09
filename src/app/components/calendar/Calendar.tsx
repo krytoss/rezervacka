@@ -7,7 +7,18 @@ import Form from "../form/Form"
 import { AiOutlineLoading3Quarters } from "rocketicons/ai"
 import Times from "./Times"
 
-const Calendar = () => {
+type Scope = {
+	id: number,
+	name: string,
+	price: number,
+	duration: number
+}
+
+type Props = {
+	scope: Scope
+}
+
+const Calendar = ( { scope } : Props ) => {
 
 	const [ hours, setHours ] = useState<number[]>([])
 	const [ offset, setOffset ] = useState<number>(0)
@@ -31,7 +42,7 @@ const Calendar = () => {
 		min: 8, // čas začiatku prvého termínu
 		max: 17 // čas začiatku posledného termínu
 	} // treba nejak pridať obed?
-	const interval = 60
+	const interval = scope?.duration
 
 	useEffect(() => {
 	

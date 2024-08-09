@@ -1,6 +1,6 @@
 import BookingWrapper from "../components/calendar/BookingWrapper"
 
-const CalendarPage = () => {
+const BookingPage = () => {
 
 	return (
 		<div className="w-screen h-screen flex">
@@ -9,4 +9,4 @@ const CalendarPage = () => {
 	)
 }
 
-export default CalendarPage
+export default BookingPage
