@@ -15,12 +15,17 @@ const Times = ({ hours, setDateTime, dateTime }: Props) => {
 			<h3 className='text-lg font-semibold mb-2'>Vyberte čas</h3>
 			<div className='grid grid-cols-5 gap-2'>
 				{
-					hours.map((start, i) => {
-						return (
-							<TimeButton key={i} time={ start } setDateTime={ setDateTime } selected={ dateTime?.getTime() === start.getTime() } />
-						)
-					})
-				}
+					hours && hours.length ?
+						hours.map((start, i) => {
+							return (
+								<TimeButton key={i} time={ start } setDateTime={ setDateTime } selected={ dateTime?.getTime() === start.getTime() } />
+							)
+						})
+						:
+						<div className='flex justify-center items-center col-span-5'>
+							<AiOutlineLoading3Quarters className='animate-spin text-gray-400' />
+						</div>
+					}
 			</div>
 		</div>
 	)

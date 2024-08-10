@@ -14,9 +14,9 @@ const DayButton = ({day, disabled, setAllowedHours, setDate, selected, booked, c
 
 	const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
-		setAllowedHours(undefined)
 		if (booked || disabled)
 			return
+		setAllowedHours(undefined)
 		if (selected) {
 			setDate(undefined)
 		} else {
