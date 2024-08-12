@@ -3,13 +3,7 @@
 import { useEffect, useState } from "react"
 import Calendar from "./Calendar"
 import ScopeSelector from "./ScopeSelector"
-
-type Scope = {
-	id: number,
-	name: string,
-	price: number,
-	duration: number
-}
+import Scope from "@/app/types/Scope"
 
 const BookingWrapper = () => {
 

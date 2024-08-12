@@ -6,13 +6,7 @@ import { SlArrowLeft, SlArrowRight } from "rocketicons/sl"
 import Form from "../form/Form"
 import { AiOutlineLoading3Quarters } from "rocketicons/ai"
 import Times from "./Times"
-
-type Scope = {
-	id: number,
-	name: string,
-	price: number,
-	duration: number
-}
+import Scope from "@/app/types/Scope"
 
 type Props = {
 	businessId: number,
@@ -40,8 +34,6 @@ const Calendar = ( { businessId, scope } : Props ) => {
 	const holidayDays = ['2024/5/31']
 	const bookedDays = [ '5. 6. 2024 10:00:00' ]
 
-	const interval = scope?.duration
-
 	useEffect(() => {
 		setHours([])
 		if (selectedDate) {
@@ -59,32 +51,6 @@ const Calendar = ( { businessId, scope } : Props ) => {
 				});
 		}
 	}, [ setHours, selectedDate, setAllowedHours, businessId ])
-
-	useEffect(() => {
-	
-		let currHours = []
-		if (allowedHours != undefined) {
-			if (allowedHours.min && allowedHours.max) {
-
-				const opening = new Date(selectedDate?.getTime() || 0)
-				opening.setHours(parseInt(allowedHours.min.split(':')[0]))
-				opening.setMinutes(parseInt(allowedHours.min.split(':')[1]))
-				const closing = new Date(selectedDate?.getTime() || 0)
-				closing.setHours(parseInt(allowedHours.max.split(':')[0]))
-				closing.setMinutes(parseInt(allowedHours.max.split(':')[1]))
-				const current = new Date(selectedDate?.getTime() || 0)
-				current.setHours(opening.getHours())
-				current.setMinutes(opening.getMinutes())
-
-				while (current.getTime() < closing.getTime()) {
-					currHours.push(new Date(current))
-					current.setMinutes(current.getMinutes() + interval)
-				}
-			}
-		}
-		setHours(currHours)
-	
-	}, [ setHours, selectedDate, allowedHours ])
 
 	useEffect(() => {
 		setCurrentDay(new Date(today.setMonth(today.getMonth() + offset)))
@@ -204,7 +170,7 @@ const Calendar = ( { businessId, scope } : Props ) => {
 									))}
 								</tbody>
 							</table>
-							{selectedDate && <Times hours={hours} dateTime={dateTime} setDateTime={setDateTime} />}
+							{selectedDate && <Times scope={scope} allowedHours={allowedHours} dateTime={dateTime} setDateTime={setDateTime} />}
 						</div>
 					</Form>
 			}
