@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { ReactNode } from "react"
 
 type Props = {
@@ -8,7 +9,7 @@ type Props = {
 
 const MenuLink = ({ link, children, className }: Props) => {
 	return (
-		<a
+		<Link
 			className={ 
 				`menu-link flex items-center w-full
 				text-darkgray hover:text-darkgray
@@ -19,7 +20,7 @@ const MenuLink = ({ link, children, className }: Props) => {
 		 	href={ link }
 		>
 			{ children }
-		</a>
+		</Link>
 	)
 }
 
