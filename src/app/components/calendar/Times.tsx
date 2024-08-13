@@ -26,16 +26,18 @@ const Times = ({ scope, allowedHours, setDateTime, dateTime }: Props) => {
 				const closing = new Date(dateTime?.getTime() || 0)
 				closing.setHours(parseInt(allowedHours.max.split(':')[0]))
 				closing.setMinutes(parseInt(allowedHours.max.split(':')[1]))
-				const current = new Date(dateTime?.getTime() || 0)
-				current.setHours(opening.getHours())
-				current.setMinutes(opening.getMinutes())
+				const currStart = new Date(dateTime?.getTime() || 0)
+				currStart.setHours(opening.getHours())
+				currStart.setMinutes(opening.getMinutes())
+				const currEnd = new Date(currStart.getTime() + scope?.duration * 60000)
+				const current = { start: currStart, end: currEnd }
 
-				while (current.getTime() < closing.getTime()) {
-					const start = new Date(current)
-					const end = new Date(current)
-					end.setMinutes(end.getMinutes() + scope?.duration)
+				while (current.end.getTime() <= closing.getTime()) {
+					const start = new Date(current.start)
+					const end = new Date(current.end)
 					currHours.push({start: start, end: end})
-					current.setTime(start.getTime() + scope?.interval * 60000)
+					current.start.setTime(start.getTime() + scope?.interval * 60000)
+					current.end.setTime(end.getTime() + scope?.interval * 60000)
 				}
 			}
 		}
