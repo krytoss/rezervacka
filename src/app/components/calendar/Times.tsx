@@ -35,7 +35,7 @@ const Times = ({ scope, allowedHours, setDateTime, dateTime }: Props) => {
 					const end = new Date(current)
 					end.setMinutes(end.getMinutes() + scope?.duration)
 					currHours.push({start: start, end: end})
-					current.setTime(end.getTime() + scope?.break * 60000)
+					current.setTime(start.getTime() + scope?.interval * 60000)
 				}
 			}
 		}

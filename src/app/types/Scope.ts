@@ -4,7 +4,7 @@ type Scope = {
 	name: string,
 	price: number,
 	duration: number,
-	break: number
+	interval: number
 }
 
 export default Scope;
