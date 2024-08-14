@@ -20,18 +20,18 @@ const Input = ({ id, label, type, inline, icon, className, placeholder, value, o
 	}
 
 	return (
-		<div className={`relative ` + (inline ? 'inline-block' : '')}>
+		<div className={`relative w-full ` + (inline ? 'inline-block' : '')}>
 			<input
 				className={
 					`transition bg-transparent border-2 border-b-2
 					border-slate-800/20 focus:border-slate-800/70
 					text-gray-800 text-sm placeholder:text-slate-800/40
 					rounded-md
-					block w-full p-2.5
+					block ${inline ? '' : 'w-full'} p-2.5
 					peer
 					px-2.5 py-2.5 w-full
 					focus:outline-none focus:ring-0 z-10 `
-					+ ( icon && 'pr-7 ' )
+					+ ( icon ? 'pr-7 ' : '' )
 					+ className
 				}
 				type={ type }

@@ -10,10 +10,12 @@ import Scope from "@/app/types/Scope"
 
 type Props = {
 	businessId: number,
-	scope: Scope
+	scope: Scope,
+	dateTime: Date | undefined,
+	setDateTime: (time: Date | undefined) => void
 }
 
-const Calendar = ( { businessId, scope } : Props ) => {
+const Calendar = ( { businessId, scope, dateTime, setDateTime } : Props ) => {
 
 	const [ hours, setHours ] = useState<Date[]>([])
 	const [ offset, setOffset ] = useState<number>(0)
@@ -21,7 +23,6 @@ const Calendar = ( { businessId, scope } : Props ) => {
 	const [ currentDay, setCurrentDay ] = useState<Date>(new Date())
 	const [ calendarDays, setCalendarDays ] = useState<Date[][]>([])
 	const [ selectedDate, setSelectedDate ] = useState<Date>()
-	const [ dateTime, setDateTime ] = useState<Date>()
 	const [ allowedHours, setAllowedHours ] = useState<{ min: string, max: string }>()
 
 	const today = new Date()
@@ -109,7 +110,7 @@ const Calendar = ( { businessId, scope } : Props ) => {
 	}, [ currentDay, setOffset, setSelectedDate ])
 
 	return (
-		<div className='w-4/5 mx-auto bg-gray-600'>
+		<div className='w-full mx-auto bg-gray-600'>
 			{
 				loading ?
 					<AiOutlineLoading3Quarters className='icon-7xl icon-black animate-spin' />

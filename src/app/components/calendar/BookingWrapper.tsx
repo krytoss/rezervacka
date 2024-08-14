@@ -4,12 +4,14 @@ import { useEffect, useState } from "react"
 import Calendar from "./Calendar"
 import ScopeSelector from "./ScopeSelector"
 import Scope from "@/app/types/Scope"
+import BookingForm from "./BookingForm"
 
 const BookingWrapper = () => {
 
 	const [ scopeId, setScopeId ] = useState<number>()
 	const [ scope, setScope ] = useState<Scope>()
 	const [ scopes, setScopes ] = useState<Scope[]>([])
+	const [ dateTime, setDateTime] = useState<Date>()
 	const businessId = 2
 
 	useEffect(() => {
@@ -36,7 +38,12 @@ const BookingWrapper = () => {
 	return (
 		<>
 			<ScopeSelector scopes={ scopes } scope={ scope } setScopeId={ setScopeId } />
-			{ scope && <Calendar businessId={ businessId } scope={ scope } /> }
+			{ scope &&
+				<div className='w-4/5 flex-column bg-gray-600'>
+					<Calendar dateTime={ dateTime } setDateTime={ setDateTime } businessId={ businessId } scope={ scope } />
+					{ dateTime && <BookingForm /> }
+				</div>
+			}
 		</>
 	)
 
