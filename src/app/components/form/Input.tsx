@@ -23,7 +23,7 @@ const Input = ({ id, label, type, inline, icon, className, placeholder, value, o
 		<div className={`relative w-full ` + (inline ? 'inline-block' : '')}>
 			<input
 				className={
-					`transition bg-transparent border-2 border-b-2
+					`transition border-2 border-b-2
 					border-slate-800/20 focus:border-slate-800/70
 					text-gray-800 text-sm placeholder:text-slate-800/40
 					rounded-md

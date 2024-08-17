@@ -16,7 +16,7 @@ const ScopeSelector = ({ scopes, scope, setScopeId }: Props) => {
 	}
 
 	return (
-		<div className={scope ? "h-screen w-1/5 bg-gray-800 text-white p-4" : "h-screen w-full bg-gray-800 text-white p-4"}>
+		<div className={scope ? "md:min-h-screen w-full md:w-1/5 bg-gray-800 text-white p-4" : "min-h-screen w-full bg-gray-800 text-white p-4"}>
 			<h1 className="text-xl font-bold mb-4">Logo</h1>
 			{scope && <h1 className="text-xl font-bold mb-4">{ scope.name }</h1>}
 			{ scope ?

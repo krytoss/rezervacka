@@ -36,15 +36,15 @@ const BookingWrapper = () => {
 	}, [ scopeId, setScope])
 
 	return (
-		<>
+		<div className='w-full flex flex-col md:flex-row'>
 			<ScopeSelector scopes={ scopes } scope={ scope } setScopeId={ setScopeId } />
 			{ scope &&
-				<div className='w-4/5 flex-column bg-gray-600'>
+				<div className='w-full md:w-4/5 flex-column bg-gray-600'>
 					<Calendar dateTime={ dateTime } setDateTime={ setDateTime } businessId={ businessId } scope={ scope } />
 					{ dateTime && <BookingForm /> }
 				</div>
 			}
-		</>
+		</div>
 	)
 
 }
