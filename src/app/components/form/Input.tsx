@@ -13,7 +13,7 @@ type Props = {
 	onChange?: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }
 
-const Input = ({ id, label, type, inline, icon, className, placeholder, value, onChange }: Props) => {
+const Input = ({ id, label, type, inline, icon, className, placeholder, value, required, onChange }: Props) => {
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		onChange && onChange(event)
@@ -39,6 +39,7 @@ const Input = ({ id, label, type, inline, icon, className, placeholder, value, o
 				value={ value }
 				onChange={ handleChange }
 				id={ id }
+				required={ required }
 			/>
 			{ icon &&
 				<div className='absolute top-1/2 -translate-y-3.5 right-2'>

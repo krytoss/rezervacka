@@ -36,11 +36,11 @@ const BookingForm = ({ setConfirmation }: Props ) => {
 	return (
 		<form className="max-w-md mx-auto mt-10" onSubmit={ handleSubmit }>
 			<div className="mb-4">
-				<Input id='name' className='bg-gray-200' label="Meno a priezvisko" type="text" value={ name } onChange={ handleNameChange } />
+				<Input id='name' className='bg-gray-200' label="Meno a priezvisko" type="text" value={ name } onChange={ handleNameChange } required={ true } />
 			</div>
 			<div className="mb-4 flex gap-x-4">
-				<Input id='tel' inline={ true } className='w-1/2 bg-gray-200' label="Telefónne číslo" type="tel" value={ phone } onChange={ handlePhoneChange }/>
-				<Input id='mail' inline={ true } className='w-1/2 bg-gray-200' label="E-mail" type="email" value={ email } onChange={ handleEmailChange }/>
+				<Input id='tel' inline={ true } className='w-1/2 bg-gray-200' label="Telefónne číslo" type="tel" value={ phone } onChange={ handlePhoneChange } required={ true }/>
+				<Input id='mail' inline={ true } className='w-1/2 bg-gray-200' label="E-mail" type="email" value={ email } onChange={ handleEmailChange } required={ true }/>
 			</div>
 			<div className="mb-4">
 				<textarea className="w-full px-3 py-2 border border-gray-300 bg-gray-200 rounded-md" placeholder="Poznámka" value={ note } onChange={ handleNoteChange }></textarea>
