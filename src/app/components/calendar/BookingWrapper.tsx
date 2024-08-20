@@ -5,6 +5,10 @@ import Calendar from "./Calendar"
 import ScopeSelector from "./ScopeSelector"
 import Scope from "@/app/types/Scope"
 import BookingForm from "./BookingForm"
+import Modal from "../modal/Modal"
+import ModalHeader from "../modal/ModalHeader"
+import ModalBody from "../modal/ModalBody"
+import ConfirmationCode from "../form/ConfirmationCode"
 
 const BookingWrapper = () => {
 
@@ -12,6 +16,7 @@ const BookingWrapper = () => {
 	const [ scope, setScope ] = useState<Scope>()
 	const [ scopes, setScopes ] = useState<Scope[]>([])
 	const [ dateTime, setDateTime] = useState<Date>()
+	const [ confirmationModal, setConfirmationModal ] = useState<boolean>(false)
 	const businessId = 2
 
 	useEffect(() => {
@@ -41,8 +46,17 @@ const BookingWrapper = () => {
 			{ scope &&
 				<div className='w-full md:w-4/5 flex-column bg-gray-600'>
 					<Calendar dateTime={ dateTime } setDateTime={ setDateTime } businessId={ businessId } scope={ scope } />
-					{ dateTime && <BookingForm /> }
+					{ dateTime && <BookingForm setConfirmation={ setConfirmationModal } /> }
 				</div>
+			}
+			{ confirmationModal &&
+				<Modal setOpen={ setConfirmationModal }>
+					<ModalHeader title='Potvrdenie rezervácie' />
+					<ModalBody>
+						<p>Na telefónne číslo Vám bol zaslaný potvrdzovací kód.</p>
+						<ConfirmationCode />
+					</ModalBody>
+				</Modal>
 			}
 		</div>
 	)

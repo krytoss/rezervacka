@@ -1,7 +1,11 @@
 import { ChangeEvent, useState } from "react";
 import Input from "../form/Input";
 
-const BookingForm = () => {
+type Props = {
+	setConfirmation: (confirmation: boolean) => void
+}
+
+const BookingForm = ({ setConfirmation }: Props ) => {
 
 	const [ name, setName ] = useState<string>('')
 	const [ phone, setPhone ] = useState<string>('')
@@ -24,8 +28,13 @@ const BookingForm = () => {
 		setNote(event.target.value)
 	}
 	
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		setConfirmation(true)
+	}
+	
 	return (
-		<form className="max-w-md mx-auto mt-10">
+		<form className="max-w-md mx-auto mt-10" onSubmit={ handleSubmit }>
 			<div className="mb-4">
 				<Input id='name' className='bg-gray-200' label="Meno a priezvisko" type="text" value={ name } onChange={ handleNameChange } />
 			</div>
