@@ -1,5 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import Input from "../form/Input";
+import 'react-international-phone/style.css';
+import TelephoneInput from "../form/TelephoneInput";
 
 type Props = {
 	setConfirmation: (confirmation: boolean) => void
@@ -14,10 +16,6 @@ const BookingForm = ({ setConfirmation }: Props ) => {
 
 	const handleNameChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setName(event.target.value)
-	}
-
-	const handlePhoneChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		setPhone(event.target.value)
 	}
 
 	const handleEmailChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -38,8 +36,10 @@ const BookingForm = ({ setConfirmation }: Props ) => {
 			<div className="mb-4">
 				<Input id='name' className='bg-gray-200' label="Meno a priezvisko" type="text" value={ name } onChange={ handleNameChange } required={ true } />
 			</div>
+			<div className="mb-4">
+				<TelephoneInput className='relative z-20' value={ phone } onChange={ setPhone } />
+			</div>
 			<div className="mb-4 flex gap-x-4">
-				<Input id='tel' inline={ true } className='w-1/2 bg-gray-200' label="Telefónne číslo" type="tel" value={ phone } onChange={ handlePhoneChange } required={ true }/>
 				<Input id='mail' inline={ true } className='w-1/2 bg-gray-200' label="E-mail" type="email" value={ email } onChange={ handleEmailChange } required={ true }/>
 			</div>
 			<div className="mb-4">

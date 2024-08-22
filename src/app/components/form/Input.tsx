@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode, useState } from "react"
+import { ChangeEvent, forwardRef, ReactNode, useState } from "react"
 
 type Props = {
 	id?: string,
@@ -23,15 +23,15 @@ const Input = ({ id, label, type, inline, icon, className, placeholder, value, r
 		<div className={`relative w-full ` + (inline ? 'inline-block' : '')}>
 			<input
 				className={
-					`transition border-2 border-b-2
-					border-slate-800/20 focus:border-slate-800/70
+					`transition focus:border-slate-800/70
 					text-gray-800 text-sm placeholder:text-slate-800/40
-					rounded-md
+					rounded-md outline-none
 					block ${inline ? '' : 'w-full'} p-2.5
 					peer
 					px-2.5 py-2.5 w-full
 					focus:outline-none focus:ring-0 z-10 `
 					+ ( icon ? 'pr-7 ' : '' )
+					+ ( label ? 'pt-5 ' : '')
 					+ className
 				}
 				type={ type }
